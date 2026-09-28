@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Consulta Legis — Gabinete do Consumidor</title>
+  <meta name="description" content="Consulta à legislação: pergunte ao agente e veja os dispositivos que fundamentam a resposta.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2313213c'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --marinho: #13213c;
+      --marinho-profundo: #0c1628;
+      --marinho-suave: #24375c;
+      --vinho: #6b1f2a;
+      --vinho-claro: #8c2d3b;
+      --ouro: #b08d57;
+      --ouro-claro: #d9c29a;
+      --papel: #f4efe4;
+      --papel-claro: #fbf8f1;
+      --folha: #fffdf8;
+      --pedra: #ddd3c2;
+      --pedra-escura: #b9ad98;
+      --texto: #1d2433;
+      --texto-secundario: #4a5163;
+      --texto-suave: #6e7384;
+      --verde: #2f6b4f;
+      --ambar: #9a6b12;
+      --erro: #9b2c2c;
+      --serifa: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+      --sans: "Public Sans", "Segoe UI", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+      --raio: 4px;
+      --sombra: 0 1px 0 rgba(19, 33, 60, .06), 0 8px 24px -16px rgba(19, 33, 60, .35);
+      color-scheme: light;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--texto);
+      background: var(--papel);
+      background-image: radial-gradient(rgba(19, 33, 60, .035) 1px, transparent 1px);
+      background-size: 22px 22px;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--marinho-suave); }
+    a:hover { color: var(--vinho); }
+    h1, h2, h3, h4 { font-family: var(--serifa); color: var(--marinho); margin: 0; font-weight: 700; letter-spacing: .01em; }
+    h1 { font-size: 2.35rem; line-height: 1.1; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.25rem; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    :focus-visible { outline: 2px solid var(--ouro); outline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+    .conteiner { width: min(1320px, 100% - 32px); margin-inline: auto; }
+    .rotulo-secao { font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--vinho); }
+    .filete-duplo { border: 0; height: 5px; border-top: 1px solid var(--ouro); border-bottom: 1px solid var(--ouro); margin: 0; }
+    .botao {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      min-height: 40px; padding: .5rem 1.1rem; border-radius: var(--raio);
+      border: 1px solid var(--marinho); background: var(--marinho); color: #f7f2e7;
+      font-weight: 600; font-size: .9rem; letter-spacing: .02em; cursor: pointer; text-decoration: none;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .botao:hover { background: var(--marinho-suave); color: #fff; }
+    .botao:disabled { opacity: .55; cursor: not-allowed; }
+    .botao.secundario { background: transparent; color: var(--marinho); border-color: var(--pedra-escura); }
+    .botao.secundario:hover { border-color: var(--marinho); background: var(--folha); color: var(--marinho); }
+    .botao.vinho { background: var(--vinho); border-color: var(--vinho); }
+    .botao.vinho:hover { background: var(--vinho-claro); }
+    .botao.fantasma { background: transparent; border-color: transparent; color: var(--marinho-suave); padding-inline: .6rem; }
+    .botao.fantasma:hover { background: rgba(19, 33, 60, .06); }
+    .botao.pequeno { min-height: 32px; padding: .3rem .75rem; font-size: .82rem; }
+    .botao.perigo { background: transparent; color: var(--erro); border-color: #d9b3b3; }
+    .icone { width: 18px; height: 18px; flex: none; }
+    .entrada, select.entrada, textarea.entrada {
+      width: 100%; min-height: 40px; padding: .55rem .75rem; border: 1px solid var(--pedra-escura); border-radius: var(--raio);
+      background: var(--folha); transition: border-color .15s, box-shadow .15s;
+    }
+    .entrada:focus { outline: none; border-color: var(--marinho); box-shadow: 0 0 0 3px rgba(176, 141, 87, .25); }
+    textarea.entrada { resize: none; line-height: 1.5; }
+    .folha { background: var(--folha); border: 1px solid var(--pedra); border-radius: var(--raio); box-shadow: var(--sombra); }
+    .selo {
+      display: inline-flex; align-items: center; gap: .35rem; padding: .15rem .55rem; border-radius: 999px;
+      font-size: .72rem; font-weight: 600; letter-spacing: .04em; border: 1px solid var(--pedra-escura); color: var(--texto-secundario); background: var(--papel-claro);
+      white-space: nowrap;
+    }
+    .selo.ok { color: var(--verde); border-color: #b7d3c3; background: #f1f7f3; }
+    .selo.alerta { color: var(--ambar); border-color: #e6d3a8; background: #fbf5e7; }
+    .selo.marinho { color: #f7f2e7; background: var(--marinho); border-color: var(--marinho); }
+    .selo.ouro { color: #5b4520; background: #f4ead6; border-color: var(--ouro-claro); }
+    .segmentado { display: inline-flex; border: 1px solid var(--pedra-escura); border-radius: var(--raio); overflow: hidden; background: var(--folha); }
+    .segmentado button { border: 0; background: transparent; padding: .4rem .8rem; font-size: .82rem; font-weight: 600; color: var(--texto-secundario); cursor: pointer; }
+    .segmentado button + button { border-left: 1px solid var(--pedra); }
+    .segmentado button[aria-pressed="true"] { background: var(--marinho); color: #f7f2e7; }
+    .vazio { padding: 2.5rem 1rem; text-align: center; color: var(--texto-suave); }
+    .linha { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+    .espaco { flex: 1; }
+    .marcacao h3, .marcacao h4 { font-family: var(--serifa); margin: 1rem 0 .4rem; }
+    .marcacao p { margin: 0 0 .8rem; }
+    .marcacao strong { color: var(--marinho); }
+    .marcacao a.cita {
+      display: inline-flex; align-items: baseline; gap: .2rem; padding: 0 .4rem; margin: 0 .1rem; border-radius: 3px;
+      background: #efe6d4; border: 1px solid var(--ouro-claro); color: var(--vinho); font-size: .8em; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer;
+    }
+    .marcacao a.cita::before { content: "§"; font-family: var(--serifa); font-weight: 700; color: var(--ouro); }
+    .marcacao a.cita:hover, .marcacao a.cita.ativa { background: var(--vinho); color: #fff; border-color: var(--vinho); }
+    .marcacao a.cita.ativa::before, .marcacao a.cita:hover::before { color: var(--ouro-claro); }
+    .carregando-linha { height: 2px; background: linear-gradient(90deg, transparent, var(--ouro), transparent); background-size: 200% 100%; animation: varrer 1.1s linear infinite; }
+    @keyframes varrer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+    .pensando { display: flex; align-items: center; gap: .55rem; padding: .3rem 0 .1rem; color: var(--texto-suave); font-style: italic; }
+    .pensando-pontos { display: inline-flex; gap: .22rem; }
+    .pensando-pontos i { width: 5px; height: 5px; border-radius: 50%; background: var(--ouro); animation: saltar 1.1s ease-in-out infinite; }
+    .pensando-pontos i:nth-child(2) { animation-delay: .15s; }
+    .pensando-pontos i:nth-child(3) { animation-delay: .3s; }
+    @keyframes saltar { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+    .pensando-texto { font-size: .88rem; }
+    .cursor-escrita::after { content: "▍"; color: var(--ouro); animation: piscar 1s steps(1) infinite; }
+    @keyframes piscar { 50% { opacity: 0; } }
+    .pular { position: absolute; left: -999px; top: 0; background: var(--marinho); color: #fff; padding: .5rem 1rem; z-index: 10; }
+    .pular:focus { left: 1rem; }
+    .faixa { display: none; background: var(--marinho-profundo); color: #cdd3e0; font-size: .75rem; letter-spacing: .06em; }
+    .faixa-interna { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; }
+    .faixa-aviso { color: var(--ouro-claro); }
+    .cabecalho { flex: none; background: var(--papel-claro); position: relative; z-index: 5; }
+    .cabecalho-interno { display: flex; align-items: center; gap: 1rem; padding: .4rem 0; min-height: 54px; }
+    .marca { display: flex; flex: none; align-items: center; gap: .6rem; text-decoration: none; color: var(--marinho); }
+    .marca svg { width: 38px; height: 38px; }
+    .marca-texto { display: flex; flex-direction: column; line-height: 1.1; }
+    .marca-texto strong { font-family: var(--serifa); font-size: 1.3rem; font-variant: small-caps; letter-spacing: .06em; }
+    .marca-texto small { display: none; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--vinho); font-weight: 600; }
+    .navegacao { display: none; gap: .3rem; flex: 1; }
+    .navegacao span { color: var(--marinho); font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem .6rem; border-bottom: 2px solid var(--ouro); }
+    main#conteudo { display: flex; flex: 1; flex-direction: column; width: 100%; min-width: 0; min-height: 0; overflow: hidden; }
+    .mesa { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: .75rem; flex: 1; min-width: 0; min-height: 0; margin-top: .75rem; align-items: stretch; }
+    .termo { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
+    .termo-cabecalho { display: none; justify-content: flex-end; align-items: center; gap: .6rem; padding: .7rem 1.2rem; border-bottom: 1px solid var(--pedra); background: var(--papel-claro); }
+    .termo-corpo { flex: 1; min-width: 0; min-height: 0; overflow-x: hidden; overflow-y: auto; padding: 1.2rem 1.4rem; display: flex; flex-direction: column; gap: 1.6rem; scroll-behavior: smooth; }
+    .abertura-termo { width: 100%; max-width: 560px; margin: auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: .6rem; padding: 2rem 0; }
+    .abertura-termo p { max-width: 100%; overflow-wrap: anywhere; color: var(--texto-secundario); margin: 0; }
+    .sugestoes-iniciais { display: flex; flex-wrap: wrap; width: 100%; min-width: 0; gap: .5rem; justify-content: center; margin-top: .8rem; }
+    .sugestao { min-width: 0; max-width: 100%; overflow-wrap: anywhere; white-space: normal; border: 1px solid var(--ouro-claro); background: #fbf6ec; color: var(--marinho); padding: .45rem .8rem; border-radius: 999px; font-size: .84rem; cursor: pointer; text-align: left; }
+    .sugestao:hover { background: var(--marinho); color: #fff; border-color: var(--marinho); }
+    .ato { display: flex; flex-direction: column; gap: .8rem; }
+    .papel { font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--vinho); }
+    .consulente { align-self: flex-end; max-width: 78%; background: var(--marinho); color: #eef1f7; padding: .7rem 1rem; border-radius: 6px 6px 0 6px; }
+    .consulente .papel { color: var(--ouro-claro); }
+    .consulente p { margin: .2rem 0; white-space: pre-wrap; }
+    .meta-pergunta { font-size: .72rem; color: #a9b2c6; }
+    .parecer { border: 1px solid var(--pedra); border-left: 4px solid var(--marinho); background: #fff; padding: .9rem 1.2rem 1rem; border-radius: 0 6px 6px 6px; }
+    .ato.foco .parecer { box-shadow: 0 0 0 3px rgba(176, 141, 87, .18); }
+    .parecer-cabecalho { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; padding-bottom: .4rem; border-bottom: 1px dotted var(--pedra-escura); }
+    .parecer-modelo { font-size: .75rem; color: var(--texto-suave); }
+    .instruindo { font-size: .88rem; color: var(--texto-suave); font-style: italic; }
+    .erro-texto { color: var(--erro); font-size: .88rem; margin: .3rem 0; }
+    .parecer-rodape { display: flex; justify-content: space-between; align-items: center; gap: .8rem; flex-wrap: wrap; border-top: 1px solid var(--pedra); padding-top: .6rem; margin-top: .6rem; }
+    .selos { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .acoes-parecer { display: flex; gap: .1rem; }
+    .acoes-parecer .marcado { color: var(--vinho); background: #f6eee0; }
+    .diligencias { margin-top: .8rem; display: flex; flex-direction: column; gap: .4rem; }
+    .compositor { min-width: 0; overflow: hidden; border-top: 2px solid var(--marinho); padding: .8rem 1rem 1rem; background: var(--papel-claro); display: flex; flex-direction: column; gap: .6rem; }
+    .compositor textarea { min-height: 56px; }
+    .controles { min-width: 0; display: flex; gap: .7rem; align-items: end; flex-wrap: wrap; }
+    .seletor { display: flex; flex-direction: column; gap: .15rem; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-suave); }
+    .modelo-opcoes { display: flex; min-width: 0; gap: .25rem; }
+    .modelo-opcao { min-height: 34px; padding: .3rem .65rem; border: 1px solid var(--pedra-escura); border-radius: var(--raio); background: var(--folha); color: var(--texto-secundario); font-size: .78rem; letter-spacing: 0; text-transform: none; font-weight: 600; cursor: pointer; }
+    .modelo-opcao:hover { border-color: var(--marinho); color: var(--marinho); }
+    .modelo-opcao[aria-checked="true"] { background: var(--marinho); border-color: var(--marinho); color: #fff; }
+    .botao-icone { display: none; flex: none; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 999px; border: 1px solid var(--pedra-escura); background: var(--folha); color: var(--marinho); cursor: pointer; }
+    .botao-icone:hover { border-color: var(--marinho); }
+    .botao-icone .icone { width: 20px; height: 20px; }
+    .icone-enviar { display: none; }
+    .config-painel { display: contents; }
+    .campo-perfil { display: contents; }
+    .config-painel-cabecalho, .config-rotulo { display: none; }
+    .config-cortina { display: none; }
+    .app-rodape { display: none; }
+    .app-rodape-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; padding: .5rem .2rem calc(.4rem + env(safe-area-inset-bottom)); border: 0; background: none; color: var(--texto-suave); font-size: .64rem; font-weight: 700; letter-spacing: .01em; cursor: pointer; }
+    .app-rodape-item .icone { width: 22px; height: 22px; }
+    .app-rodape-item.ativa { color: var(--vinho); }
+    .fundamentacao { min-height: 0; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+    .abas { display: flex; border-bottom: 1px solid var(--pedra); background: var(--papel-claro); }
+    .abas button { flex: 1; display: inline-flex; gap: .4rem; justify-content: center; align-items: center; padding: .75rem .5rem; border: 0; background: none; font-weight: 700; font-size: .8rem; letter-spacing: .06em; color: var(--texto-suave); cursor: pointer; border-bottom: 2px solid transparent; }
+    .abas button[aria-selected="true"] { color: var(--vinho); border-bottom-color: var(--vinho); background: var(--folha); }
+    .painel { overflow: auto; padding: 1rem 1.1rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+    .dispositivo { border-bottom: 1px solid var(--pedra); padding-bottom: .9rem; scroll-margin: 1rem; animation: surgir .4s ease both; }
+    .dispositivo.selecionado { background: linear-gradient(90deg, #fbf3e3, transparent); }
+    .carregando { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .9rem; background: rgba(244, 239, 228, .92); backdrop-filter: blur(2px); color: var(--marinho); font-size: .9rem; }
+    .carregando[hidden] { display: none; }
+    .carregando-roda { width: 34px; height: 34px; border: 3px solid var(--pedra); border-top-color: var(--vinho); border-radius: 50%; animation: girar .8s linear infinite; }
+    @keyframes girar { to { transform: rotate(360deg); } }
+    .historico-topo { align-self: center; color: var(--texto-suave); font-size: .78rem; padding: .2rem 0; }
+    @keyframes surgir { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .caminho { font-size: .7rem; letter-spacing: .06em; color: var(--texto-suave); text-transform: uppercase; margin: 0; }
+    .linha-rotulo { display: flex; align-items: center; gap: .5rem; margin: .2rem 0 .4rem; }
+    .rotulo-artigo { background: none; border: 0; padding: 0; font-family: var(--serifa); font-size: 1.2rem; font-weight: 700; color: var(--marinho); cursor: pointer; text-align: left; }
+    .rotulo-artigo:hover { color: var(--vinho); text-decoration: underline; }
+    .relevancia { width: 60px; height: 5px; background: var(--pedra); border-radius: 3px; overflow: hidden; flex: none; }
+    .relevancia span { display: block; height: 100%; background: var(--ouro); }
+    .texto-legal { font-family: var(--serifa); font-size: 1.04rem; line-height: 1.5; margin: 0 0 .35rem; color: #1f2638; }
+    .texto-legal.filho { cursor: pointer; border-left: 2px solid transparent; padding-right: .3rem; border-radius: 2px; }
+    .texto-legal.filho:hover { background: #fbf6ec; }
+    .texto-legal.citado { border-left-color: var(--ouro); background: #fbf3e3; }
+    .texto-legal.selecionado { border-left-color: var(--vinho); background: #f6e6e6; }
+    .texto-legal.destaque { font-size: 1.12rem; }
+    .nota { font-size: .78rem; color: var(--ambar); font-style: italic; margin: .2rem 0; }
+    .links { display: flex; gap: 1rem; margin-top: .4rem; font-size: .8rem; }
+    .links button { display: inline-flex; gap: .25rem; align-items: center; background: none; border: 0; padding: 0; color: var(--marinho-suave); cursor: pointer; font-weight: 600; }
+    .links button:hover { color: var(--vinho); }
+    .leitor h3 { margin-top: .5rem; font-size: 1.5rem; }
+    .urn { font-family: var(--mono); font-size: .7rem; color: var(--texto-suave); word-break: break-all; }
+    .vazio-painel { color: var(--texto-suave); display: flex; flex-direction: column; align-items: center; gap: .4rem; font-size: .88rem; text-align: center; padding: 2rem .5rem; }
+    .vazio-painel .icone { width: 32px; height: 32px; }
+    .ver-docs { display: none; }
+    .cortina { display: none; }
+    .badge { display: inline-flex; min-width: 1.2rem; height: 1.2rem; padding: 0 .35rem; border-radius: 999px; background: var(--vinho); color: #fff; font-size: .68rem; align-items: center; justify-content: center; }
+    .app-abas { display: flex; gap: .25rem; border-bottom: 1px solid var(--pedra); }
+    .cabecalho-abas { flex: 1; width: auto; margin: 0 0 0 .5rem; border-bottom: 0; }
+    .cabecalho-abas .app-aba { min-height: 38px; padding: .3rem .75rem; }
+    .app-aba { border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--texto-suave); padding: .35rem .8rem; font-size: .78rem; font-weight: 700; cursor: pointer; }
+    .app-aba.ativa { color: var(--vinho); border-bottom-color: var(--vinho); }
+    .painel-uso, .painel-prompts { flex: 1; min-height: 0; padding-top: .75rem; padding-bottom: .75rem; }
+    .uso-cartao, .prompts-cartao { height: 100%; overflow: auto; padding: 1rem; }
+    .prompts-intro { margin: .45rem 0 1rem; color: var(--texto-secundario); font-size: .86rem; }
+    .prompts-lista { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+    .prompt-card { border: 1px solid var(--pedra); border-top: 3px solid var(--vinho); padding: .8rem; background: var(--papel-claro); }
+    .prompt-card h3 { font-size: 1.15rem; margin-bottom: .45rem; }
+    .prompt-card pre { margin: 0; white-space: pre-wrap; color: var(--texto-secundario); font: .78rem/1.55 var(--mono); }
+    .uso-resumo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin-top: .8rem; }
+    .uso-resumo span { padding: .65rem; background: var(--papel-claro); border: 1px solid var(--pedra); font-size: .8rem; }
+    .uso-tabela-wrap { overflow: auto; margin-top: 1rem; }
+    .uso-tabela { width: 100%; border-collapse: collapse; font-size: .78rem; }
+    .uso-tabela th, .uso-tabela td { text-align: left; padding: .55rem; border-bottom: 1px solid var(--pedra); white-space: nowrap; }
+    .cortina.aberto { display: block; position: fixed; inset: 0; background: rgba(12, 22, 40, .45); z-index: 25; }
+    .fonte-cabecalho { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: .6rem 1rem; border-bottom: 1px solid var(--pedra); color: var(--vinho); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .fechar-fontes { display: none; }
+    .creditos { color: var(--texto-suave); font-size: .78rem; white-space: nowrap; }
+    .creditos.alerta { color: var(--vinho); font-weight: 700; }
+    .solicitacao { display: flex; align-items: center; gap: .7rem; padding: .55rem 0; border-bottom: 1px solid var(--pedra); font-size: .82rem; }
+    .marcacao ul, .marcacao ol { margin: 0 0 .8rem; padding-left: 1.3rem; }
+    .marcacao li { margin: .2rem 0; }
+    .fonte-lei { font-size: .8rem; font-weight: 600; }
+    .navegador { display: inline-flex; align-items: center; gap: .15rem; margin-left: auto; margin-right: .3rem; font-family: var(--mono); font-size: .72rem; letter-spacing: 0; color: var(--texto-suave); }
+    .navegador button { min-width: 28px; min-height: 28px; border: 1px solid var(--pedra); border-radius: var(--raio); background: var(--folha); color: var(--marinho); cursor: pointer; font-size: .9rem; line-height: 1; }
+    .navegador button:disabled { opacity: .4; cursor: default; }
+    .ref-trilha { position: sticky; top: -1rem; z-index: 2; margin: -1rem -1.1rem 0; padding: .7rem 1.1rem; display: flex; flex-wrap: wrap; gap: .35rem; background: var(--folha); border-bottom: 1px solid var(--pedra); }
+    .ref-chip { border: 1px solid var(--ouro-claro); background: #fbf6ec; color: var(--marinho); border-radius: 999px; padding: .15rem .6rem; font-size: .74rem; font-weight: 600; cursor: pointer; }
+    .ref-chip:hover { border-color: var(--vinho); }
+    .ref-chip.ativa { background: var(--vinho); border-color: var(--vinho); color: #fff; }
+    .ref-chip.extra { border-style: dashed; border-color: var(--pedra-escura); background: transparent; color: var(--texto-suave); font-weight: 500; }
+    .ref-sep { width: 100%; font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-suave); margin-top: .2rem; }
+    .documento { animation: abrir-doc .35s ease both; }
+    @keyframes abrir-doc { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+    .documento-cabecalho { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; }
+    .documento-cabecalho h3 { font-size: 1.45rem; }
+    .documento-cabecalho a { font-size: .76rem; white-space: nowrap; }
+    .documento .texto-legal { padding: .15rem .35rem; margin: 0 -.35rem .45rem; border-radius: 3px; transition: background .3s; }
+    .documento .texto-legal.nivel-paragrafo, .documento .texto-legal.nivel-texto { padding-left: 1rem; }
+    .documento .texto-legal.nivel-inciso { padding-left: 1.8rem; }
+    .documento .texto-legal.nivel-alinea { padding-left: 2.6rem; }
+    .documento .texto-legal.citado { cursor: pointer; text-decoration: underline; text-decoration-color: var(--ouro); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+    .documento .texto-legal.citado:hover { background: #fbf6ec; }
+    .documento .texto-legal.ativo { background: #f6ebd8; text-decoration-color: var(--vinho); }
+    .prompts-filtro { margin-bottom: 1rem; }
+    .prompt-limites { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .55rem; }
+    .prompt-card .rotulo-secao { display: block; margin-bottom: .2rem; }
+    .painel-lei { flex: 1; min-height: 0; padding-top: .75rem; padding-bottom: .75rem; }
+    .lei-cartao { height: 100%; display: grid; grid-template-columns: 290px minmax(0, 1fr); overflow: hidden; position: relative; }
+    .lei-sumario { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--pedra); background: var(--papel-claro); }
+    .lei-sumario-cabecalho { display: flex; align-items: center; justify-content: space-between; padding: .7rem 1rem; border-bottom: 1px solid var(--pedra); }
+    .lei-sumario-busca { padding: .55rem .75rem; border-bottom: 1px solid var(--pedra); }
+    .lei-sumario-busca .entrada { width: 100%; min-height: 34px; font-size: .82rem; }
+    .lei-indice { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: .5rem 0 1rem; }
+    .lei-indice-vazio { padding: .8rem 1rem; color: var(--texto-suave); font-size: .8rem; }
+    .lei-indice button { display: block; width: 100%; border: 0; border-left: 3px solid transparent; background: none; text-align: left; padding: .35rem 1rem; cursor: pointer; color: var(--texto-secundario); font-size: .8rem; line-height: 1.35; }
+    .lei-indice button span { display: block; font-size: .64rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-suave); }
+    .lei-indice button:hover { background: rgba(19, 33, 60, .05); color: var(--marinho); }
+    .lei-indice button.ativo { border-left-color: var(--vinho); background: var(--folha); color: var(--vinho); font-weight: 600; }
+    .lei-indice .nivel-titulo { color: var(--marinho); font-weight: 700; margin-top: .45rem; }
+    .lei-indice .nivel-capitulo { padding-left: 1.6rem; }
+    .lei-indice .nivel-secao { padding-left: 2.4rem; font-size: .76rem; }
+    .lei-leitura { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    .lei-barra { display: flex; align-items: center; gap: .45rem; padding: .6rem 1rem; border-bottom: 1px solid var(--pedra); background: var(--papel-claro); }
+    .lei-barra .entrada { flex: 1; min-width: 0; min-height: 36px; }
+    .lei-contagem { min-width: 4.5rem; text-align: center; font: .74rem var(--mono); color: var(--texto-suave); white-space: nowrap; }
+    .lei-barra .navegador { margin: 0; }
+    .lei-barra a { font-size: .78rem; font-weight: 600; white-space: nowrap; }
+    .lei-sumario-botao, .lei-sumario-fechar { display: none; }
+    .lei-texto { flex: 1; min-height: 0; overflow: auto; padding: 1.4rem 1.6rem 4rem; }
+    .lei-texto > * { max-width: 76ch; margin-inline: auto; }
+    .lei-texto p { font-family: var(--serifa); font-size: 1.1rem; line-height: 1.55; color: #1f2638; margin: 0 auto .55rem; padding: .1rem .4rem; border-radius: 3px; transition: background .6s; scroll-margin-top: 1rem; }
+    .lei-texto p.nivel-artigo { margin-top: 1.1rem; }
+    .lei-texto p.nivel-paragrafo, .lei-texto p.nivel-texto { padding-left: 1.4rem; }
+    .lei-texto p.nivel-inciso { padding-left: 2.4rem; }
+    .lei-texto p.nivel-alinea { padding-left: 3.4rem; }
+    .lei-texto p.abertura { text-align: center; font-style: italic; padding-left: .4rem; }
+    .lei-texto b { color: var(--marinho); }
+    .lei-cabecalho { text-align: center; margin: 2rem auto 1rem; font-family: var(--serifa); color: var(--marinho); }
+    .lei-cabecalho span { display: block; font: 700 .72rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--vinho); }
+    .lei-cabecalho strong { display: block; font-size: 1.35rem; }
+    .lei-cabecalho.nivel-titulo strong { font-size: 1.6rem; }
+    .lei-cabecalho.nivel-secao strong { font-size: 1.15rem; }
+    .lei-nota { font-family: var(--sans); font-size: .72rem; color: var(--texto-suave); }
+    .lei-texto p.encontrado { background: #f7ecd3; box-shadow: inset 3px 0 var(--ouro); }
+    .lei-texto p.encontrado.atual { background: #f1dcdc; box-shadow: inset 3px 0 var(--vinho); }
+    .lei-texto mark { background: none; color: inherit; font-weight: 700; text-decoration: underline; text-decoration-color: var(--ouro); text-underline-offset: 3px; }
+    .lei-texto .alvo { background: #f6ebd8; }
+    @media (max-width: 900px) {
+      .lei-cartao { grid-template-columns: minmax(0, 1fr); }
+      .lei-sumario { display: none; position: absolute; inset: 0 25% 0 0; z-index: 3; box-shadow: 8px 0 24px rgba(12, 22, 40, .2); }
+      .lei-sumario.aberto { display: flex; }
+      .lei-sumario-botao, .lei-sumario-fechar { display: inline-flex; }
+      .lei-texto { padding: 1rem .8rem 3rem; }
+    }
+    @media (max-width: 560px) {
+      .lei-sumario { right: 0; }
+      .lei-barra { flex-wrap: wrap; padding: .5rem .65rem; }
+      .lei-barra .entrada { flex-basis: 100%; order: -1; }
+      .painel-lei { padding: 0; }
+    }
+    @media (max-width: 960px) {
+      .cabecalho-interno { gap: .75rem; }
+      .faixa-aviso { display: none; }
+    }
+    @media (max-width: 900px) {
+      h1 { font-size: 1.8rem; }
+      .mesa { grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 100vw; margin-top: 0; overflow: hidden; }
+      .termo { height: 100%; border-radius: 0; border-left: 0; border-right: 0; }
+      .termo-corpo { max-height: none; }
+      .fundamentacao { display: none; position: fixed; z-index: 28; inset: 0; height: 100dvh; max-height: none; border-radius: 0; }
+      .fundamentacao.aberto { display: flex; }
+      .fechar-fontes { display: inline-flex; }
+      .consulente { max-width: 100%; }
+      .termo-cabecalho { display: flex; }
+      .ver-docs { display: inline-flex; }
+      .seletor { flex: 1 1 140px; }
+      .seletor select { max-width: none; width: 100%; }
+      .cabecalho-abas { display: none; }
+      .app-rodape { display: flex; flex: none; border-top: 1px solid var(--pedra); background: var(--papel-claro); }
+      .config-abrir { display: inline-flex; }
+      #enviar { display: inline-flex; width: 44px; height: 44px; padding: 0; border-radius: 999px; flex: none; }
+      #enviar .rotulo-enviar { display: none; }
+      #enviar .icone-enviar { display: inline-flex; width: 19px; height: 19px; }
+      .config-painel {
+        display: none; flex-direction: column; gap: .9rem; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+        background: var(--folha); border-top: 1px solid var(--pedra); border-radius: 14px 14px 0 0;
+        padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom)); box-shadow: 0 -16px 40px rgba(12, 22, 40, .28);
+        max-height: 70vh; overflow: auto;
+      }
+      .config-painel.aberto { display: flex; }
+      .config-painel-cabecalho { display: flex; align-items: center; justify-content: space-between; }
+      .config-rotulo { display: block; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-suave); margin-bottom: .35rem; }
+      .config-cortina.aberto { display: block; position: fixed; inset: 0; background: rgba(12, 22, 40, .42); z-index: 39; }
+      #perfis { width: 100%; }
+      #perfis button { flex: 1; }
+      .controles { flex-wrap: nowrap; align-items: center; }
+    }
+    @media (max-width: 560px) {
+      .conteiner { width: 100%; }
+      .cabecalho-interno { width: 100%; gap: .2rem; padding: .25rem .4rem; }
+      .marca { gap: .25rem; }
+      .marca svg { display: none; }
+      .marca-texto strong { font-size: .92rem; white-space: nowrap; }
+      .mesa, .termo { width: 100vw; max-width: 100vw; }
+      .termo-cabecalho, .termo-corpo, .compositor { width: 100%; max-width: 100vw; }
+      .termo-cabecalho { overflow: hidden; padding: .5rem .65rem; }
+      .termo-corpo { padding: .9rem .7rem; }
+      .abertura-termo { max-width: calc(100vw - 1.4rem); padding-inline: .25rem; }
+      .sugestoes-iniciais { width: 100%; padding-inline: .25rem; }
+      .sugestao { max-width: calc(100vw - 2rem); }
+      .compositor { padding: .6rem .65rem .7rem; }
+      .compositor textarea { min-height: 52px; }
+      .controles .espaco { display: none; }
+      #creditos { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .72rem; }
+      .seletor { flex: 1 1 100%; }
+      .modelo-opcoes { flex-wrap: wrap; }
+      .uso-resumo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .prompts-lista { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="carregando" id="carregando" role="status" aria-live="polite"><div class="carregando-roda"></div><span id="carregando-texto">Carregando…</span></div>
+  <a class="pular" href="#conteudo">Ir para o conteúdo</a>
+  <div class="faixa">
+    <div class="conteiner faixa-interna">
+      <span>Consulta à legislação assistida por inteligência artificial</span>
+      <span class="faixa-aviso">Ambiente de demonstração · não substitui aconselhamento jurídico</span>
+    </div>
+  </div>
+  <header class="cabecalho">
+    <div class="conteiner cabecalho-interno">
+      <a href="#conteudo" class="marca" aria-label="Consulta Legis — gabinete">
+        <svg width="48" height="48" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#13213c"/><circle cx="32" cy="32" r="26" fill="none" stroke="#b08d57" stroke-width="1.5"/><path d="M32 14v34M22 48h20M18 22h28" stroke="#f3ede1" stroke-width="2.4" stroke-linecap="round"/><path d="M18 22l-6 13h12zM46 22l-6 13h12z" fill="none" stroke="#b08d57" stroke-width="2" stroke-linejoin="round"/><circle cx="32" cy="14" r="2.6" fill="#b08d57"/></svg>
+        <span class="marca-texto">
+          <strong>Consulta Legis</strong>
+          <small>Gabinetes de consulta normativa</small>
+        </span>
+      </a>
+      <nav class="app-abas cabecalho-abas" role="tablist" aria-label="Área da aplicação">
+        <button type="button" class="app-aba ativa" data-app-tab="chat" role="tab" aria-selected="true">Chat</button>
+        <button type="button" class="app-aba" data-app-tab="lei" role="tab" aria-selected="false">Legislação</button>
+        <button type="button" class="app-aba" data-app-tab="uso" role="tab" aria-selected="false">Controle</button>
+        <button type="button" class="app-aba" data-app-tab="prompts" role="tab" aria-selected="false">Prompts</button>
+      </nav>
+    </div>
+    <hr class="filete-duplo">
+  </header>
+
+  <main id="conteudo">
+    <section class="conteiner painel-lei" id="painel-lei" hidden aria-label="Legislação">
+      <div class="folha lei-cartao">
+        <aside class="lei-sumario" id="lei-sumario" aria-label="Sumário da lei">
+          <div class="lei-sumario-cabecalho"><span class="rotulo-secao">Sumário</span><button type="button" class="botao fantasma pequeno lei-sumario-fechar" id="lei-sumario-fechar">Fechar</button></div>
+          <div class="lei-sumario-busca">
+            <label class="sr-only" for="lei-sumario-filtro">Buscar no sumário</label>
+            <input id="lei-sumario-filtro" class="entrada" type="search" autocomplete="off" placeholder="Buscar no sumário">
+          </div>
+          <nav class="lei-indice" id="lei-indice"></nav>
+          <p class="lei-indice-vazio" id="lei-indice-vazio" hidden>Nenhum item do sumário com esse texto.</p>
+        </aside>
+        <div class="lei-leitura">
+          <div class="lei-barra">
+            <button type="button" class="botao secundario pequeno lei-sumario-botao" id="lei-sumario-botao">Sumário</button>
+            <label class="sr-only" for="lei-busca">Buscar na lei</label>
+            <input id="lei-busca" class="entrada" type="search" autocomplete="off" placeholder="Buscar no texto ou ir para artigo (ex.: 49 ou 42-A)">
+            <span class="navegador">
+              <button type="button" id="lei-anterior" aria-label="Resultado anterior" disabled>‹</button>
+              <span class="lei-contagem" id="lei-contagem"></span>
+              <button type="button" id="lei-proxima" aria-label="Próximo resultado" disabled>›</button>
+            </span>
+            <a href="https://planalto.gov.br/ccivil_03/leis/l8078compilado.htm" id="lei-planalto" target="_blank" rel="noopener">Planalto ↗</a>
+          </div>
+          <div class="lei-texto" id="lei-texto"><p class="vazio">Carregando a lei…</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="conteiner painel-uso" id="painel-uso" hidden aria-label="Controle">
+      <div class="folha uso-cartao">
+        <div class="linha"><span class="rotulo-secao">Consumo acumulado</span><span class="espaco"></span><button type="button" class="botao secundario pequeno" id="atualizar-uso">Atualizar</button></div>
+        <div class="uso-resumo" id="uso-resumo"><span>Carregando consumo…</span></div>
+        <div class="uso-tabela-wrap"><table class="uso-tabela"><thead><tr><th>Modelo</th><th>Entrada LLM</th><th>Embedding</th><th>Total</th><th>Custo</th><th>Data</th></tr></thead><tbody id="uso-linhas"></tbody></table></div>
+      </div>
+    </section>
+    <section class="conteiner painel-prompts" id="painel-prompts" hidden aria-label="Prompts do sistema">
+      <div class="folha prompts-cartao">
+        <div class="rotulo-secao">Prompts do agente</div>
+        <p class="prompts-intro">Somente leitura. A reescrita transforma a pergunta em até 3 consultas para a busca vetorial; o prompt do perfil escolhido recebe as fontes recuperadas e gera a resposta. Os limites de tokens valem para cada chamada: fontes que não cabem na entrada ficam de fora, e a saída é cortada no máximo indicado.</p>
+        <div class="segmentado prompts-filtro" role="group" aria-label="Filtrar prompts" id="prompts-filtro">
+          <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
+          <button type="button" data-filtro="perfil" aria-pressed="false">Perfil</button>
+          <button type="button" data-filtro="reescrita" aria-pressed="false">Reescrita</button>
+        </div>
+        <div class="prompts-lista" id="prompts-lista"></div>
+      </div>
+    </section>
+
+    <div class="conteiner mesa">
+      <div class="cortina" id="cortina"></div>
+
+      <section class="termo folha" aria-label="Consulta">
+        <div class="termo-cabecalho">
+          <span class="espaco"></span>
+          <button type="button" class="botao secundario pequeno ver-docs" id="ver-docs">Fontes</button>
+        </div>
+        <div class="termo-corpo" id="rolagem" aria-live="polite"></div>
+        <form class="compositor" id="form">
+          <p class="erro-texto" id="erro" role="alert" hidden></p>
+          <label class="sr-only" for="pergunta">Pergunta</label>
+          <textarea id="pergunta" class="entrada" rows="2" maxlength="500" placeholder="Escreva a pergunta ao agente (Enter envia, Shift+Enter quebra linha)"></textarea>
+          <div class="controles">
+            <button type="button" class="botao-icone config-abrir" id="config-abrir" aria-label="Configurações · perfil e modelo" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+            <div class="config-painel" id="config-painel">
+              <div class="config-painel-cabecalho">
+                <span class="rotulo-secao">Configurações</span>
+                <button type="button" class="botao fantasma pequeno" id="config-fechar">Concluído</button>
+              </div>
+              <div class="campo-perfil">
+                <span class="config-rotulo">Perfil da resposta</span>
+                <div class="segmentado" role="group" aria-label="Perfil" id="perfis">
+                  <button type="button" data-perfil="leigo" aria-pressed="true">Leigo</button>
+                  <button type="button" data-perfil="tecnico" aria-pressed="false">Técnico</button>
+                </div>
+              </div>
+              <div class="seletor"><span>Modelo</span><div class="modelo-opcoes" id="modelo" role="radiogroup" aria-label="Modelo"></div></div>
+            </div>
+            <div class="config-cortina" id="config-cortina"></div>
+            <span class="espaco"></span>
+            <span class="creditos" id="creditos" aria-live="polite"></span>
+            <button type="submit" class="botao" id="enviar" disabled>
+              <span class="rotulo-enviar">Consultar</span>
+              <svg class="icone icone-enviar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="fundamentacao folha" id="fundamentacao" aria-label="Fundamentação legal">
+        <div class="fonte-cabecalho">
+          <span>Fontes consultadas</span>
+          <span class="navegador" id="navegador" hidden>
+            <button type="button" id="ref-anterior" aria-label="Referência anterior">‹</button>
+            <span id="ref-posicao"></span>
+            <button type="button" id="ref-proxima" aria-label="Próxima referência">›</button>
+          </span>
+          <button type="button" class="botao fantasma pequeno fechar-fontes" id="fechar-fontes" aria-label="Fechar fontes">Fechar</button>
+        </div>
+        <div class="painel" id="painel"></div>
+      </aside>
+    </div>
+  </main>
+
+  <nav class="app-rodape" id="app-rodape" role="tablist" aria-label="Navegação do aplicativo">
+    <button type="button" class="app-rodape-item ativa" data-app-tab="chat" role="tab" aria-selected="true">
+      <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-4.5 7.4 8.5 8.5 0 0 1-9-.4L3 21l1.6-4.7a8.38 8.38 0 0 1-1.1-4.3 8.5 8.5 0 0 1 8.5-8.5h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span>Chat</span>
+    </button>
+    <button type="button" class="app-rodape-item" data-app-tab="lei" role="tab" aria-selected="false">
+      <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5v-13z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5v-13z"/></svg>
+      <span>Legislação</span>
+    </button>
+    <button type="button" class="app-rodape-item" data-app-tab="uso" role="tab" aria-selected="false">
+      <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16.5A1.5 1.5 0 0 0 4.5 21H21"/><path d="M7 15l3.5-4.5 3 3L19 6"/></svg>
+      <span>Controle</span>
+    </button>
+    <button type="button" class="app-rodape-item" data-app-tab="prompts" role="tab" aria-selected="false">
+      <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 8.5 4.5 12l4 3.5"/><path d="M15.5 8.5l4 3.5-4 3.5"/><path d="M13 5.5 11 18.5"/></svg>
+      <span>Prompts</span>
+    </button>
+  </nav>
+
+
+  <script type="module">
+const API = "/api";
+const $ = (id) => document.getElementById(id);
+const state = { messages: [], history: { before: null, more: false, loading: false }, sending: false, models: [], model: null, profile: "leigo", view: { msg: null, fonte: null, doc: null }, prompts: null, promptFilter: "todos", usage: null };
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => (
+  { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+));
+
+const PROFILE_NAMES = { leigo: "Leigo", tecnico: "Técnico" };
+const number = (value) => Number(value || 0).toLocaleString("pt-BR");
+
+function citedFontes(message) {
+  const seen = [];
+  for (const match of message.answer.matchAll(/\[Fontes?[^\]]*\]/g)) {
+    for (const n of match[0].match(/\d+/g) || []) {
+      const fonte = Number(n);
+      if (message.citations[fonte - 1] && !seen.includes(fonte)) seen.push(fonte);
+    }
+  }
+  return seen;
+}
+
+function navigationOrder(message) {
+  const cited = citedFontes(message);
+  return cited.length ? cited : message.citations.map((_, index) => index + 1);
+}
+
+function citeLinks(html, message, msg) {
+  return html.replace(/\[Fontes?[^\]]*\]/g, (whole) => {
+    const links = (whole.match(/\d+/g) || []).map(Number).filter((n) => message.citations[n - 1]).map((n) =>
+      `<a class="cita" href="#fonte-${n}" data-msg="${msg}" data-fonte="${n}" title="Fonte ${n}">${escapeHtml(message.citations[n - 1].reference)}</a>`);
+    return links.length ? links.join("") : whole;
+  });
+}
+
+function formatAnswer(message, msg) {
+  const blocks = [];
+  let list = null;
+  for (const raw of message.answer.split(/\n/)) {
+    const line = raw.trim();
+    const item = line.match(/^(?:[-*•]|(\d+)[.)])\s+(.*)$/);
+    if (item) {
+      const type = item[1] ? "ol" : "ul";
+      if (!list || list.type !== type) { list = { type, items: [] }; blocks.push(list); }
+      list.items.push(item[2]);
+      continue;
+    }
+    list = null;
+    if (line) blocks.push({ type: "p", text: line });
+  }
+  const inline = (text) => citeLinks(escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/^#{1,4}\s*/, ""), message, msg);
+  return blocks.map((block) => block.type === "p"
+    ? `<p>${inline(block.text)}</p>`
+    : `<${block.type}>${block.items.map((item) => `<li>${inline(item)}</li>`).join("")}</${block.type}>`).join("");
+}
+
+function tokenBadges(message) {
+  const usage = message.usage || {};
+  return `<span class="selo" title="Tokens enviados ao modelo">Entrada ${number(usage.promptTokens)} tokens</span>
+    <span class="selo" title="Tokens gerados pelo modelo">Saída ${number(usage.completionTokens)} tokens</span>`;
+}
+
+function renderMessages({ keepFromBottom = null } = {}) {
+  if (!state.messages.length) return;
+  const top = state.history.loading ? `<p class="historico-topo">Carregando mensagens anteriores…</p>`
+    : state.history.more ? `<p class="historico-topo">Role para cima para ver mensagens anteriores</p>` : "";
+  $("rolagem").innerHTML = top + state.messages.map((message, msg) => `
+    <article class="ato">
+      <div class="consulente"><span class="papel">Consulente</span><p>${escapeHtml(message.question)}</p></div>
+      <div class="parecer">${message.pending ? `
+        <div class="parecer-cabecalho"><span class="papel">Parecer do agente</span></div>
+        <div class="pensando" role="status" aria-live="polite">
+          <span class="pensando-pontos"><i></i><i></i><i></i></span>
+          <span class="pensando-texto" data-pensando="${msg}">${escapeHtml(message.pendingText)}</span>
+        </div>` : `
+        <div class="parecer-cabecalho"><span class="papel">Parecer do agente · ${PROFILE_NAMES[message.profile] || ""}</span><span class="parecer-modelo">${escapeHtml(message.model || "")}</span></div>
+        <div class="marcacao">${formatAnswer(message, msg)}</div>
+        <footer class="parecer-rodape"><div class="selos">${tokenBadges(message)}</div></footer>`}
+      </div>
+    </article>`).join("");
+  const box = $("rolagem");
+  box.style.scrollBehavior = "auto";
+  box.scrollTop = keepFromBottom === null ? box.scrollHeight : box.scrollHeight - keepFromBottom;
+  box.style.scrollBehavior = "";
+  markActive();
+}
+
+function renderSources(msg = null) {
+  state.view = { msg, fonte: null, doc: null };
+  const message = state.messages[msg];
+  $("navegador").hidden = !message?.citations.length;
+  if (!message?.citations.length) {
+    $("painel").innerHTML = `<div class="vazio-painel"><p>As fontes recuperadas aparecerão aqui. Clique numa referência da resposta para abrir o dispositivo.</p></div>`;
+    return;
+  }
+  const cited = citedFontes(message);
+  const extra = message.citations.map((_, index) => index + 1).filter((n) => !cited.includes(n));
+  const chip = (n, cls = "") => `<button type="button" class="ref-chip ${cls}" data-msg="${msg}" data-fonte="${n}">${escapeHtml(message.citations[n - 1].reference)}</button>`;
+  $("painel").innerHTML = `
+    <div class="ref-trilha" id="ref-trilha">
+      ${cited.map((n) => chip(n)).join("")}
+      ${extra.length ? `<span class="ref-sep">${cited.length ? "Também recuperadas" : "Recuperadas"}</span>${extra.map((n) => chip(n, "extra")).join("")}` : ""}
+    </div>
+    <div id="leitor"></div>`;
+  openFonte(msg, navigationOrder(message)[0], { instant: true });
+}
+
+function renderDocument(message, msg, citation) {
+  const doc = message.documents.find((item) => item.id === citation.documentId);
+  const cited = new Map(citedFontes(message).map((n) => [message.citations[n - 1].id, n]));
+  const chunks = doc ? doc.chunks : [{ id: citation.id, level: "texto", text: citation.text }];
+  $("leitor").innerHTML = `
+    <article class="documento" data-doc="${escapeHtml(citation.documentId)}">
+      <p class="caminho">${escapeHtml((citation.path || []).slice(0, -1).join(" › "))}</p>
+      <header class="documento-cabecalho">
+        <h3>${escapeHtml(doc?.code || citation.reference)}</h3>
+        <button type="button" class="botao fantasma pequeno" data-lei-ir="${escapeHtml(citation.id)}">Ver na lei completa</button>
+      </header>
+      ${chunks.map((chunk) => {
+        const n = cited.get(chunk.id);
+        return `<p class="texto-legal nivel-${escapeHtml(chunk.level)}${n ? " citado" : ""}" data-chunk="${escapeHtml(chunk.id)}"${n ? ` data-msg="${msg}" data-fonte="${n}" title="Fonte ${n}"` : ""}>${escapeHtml(chunk.text)}</p>`;
+      }).join("")}
+    </article>`;
+}
+
+const scrollAnimations = new Map();
+function scrollSmooth(panel, target, instant) {
+  cancelAnimationFrame(scrollAnimations.get(panel));
+  const from = panel.scrollTop;
+  const distance = target - from;
+  if (instant || Math.abs(distance) < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) { panel.scrollTop = target; return; }
+  const duration = Math.min(900, Math.max(320, Math.abs(distance) * 0.8));
+  const started = performance.now();
+  const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const step = (now) => {
+    const t = Math.min(1, (now - started) / duration);
+    panel.scrollTop = from + distance * ease(t);
+    if (t < 1) scrollAnimations.set(panel, requestAnimationFrame(step));
+  };
+  scrollAnimations.set(panel, requestAnimationFrame(step));
+}
+
+function openFonte(msg, fonte, { instant = false } = {}) {
+  const message = state.messages[msg];
+  const citation = message?.citations[fonte - 1];
+  if (!citation) return;
+  if (state.view.msg !== msg) return renderSources(msg), openFonte(msg, fonte, { instant: true });
+  const sameDoc = state.view.doc === citation.documentId;
+  if (!sameDoc) renderDocument(message, msg, citation);
+  state.view = { msg, fonte, doc: citation.documentId };
+  markActive();
+  const panel = $("painel");
+  const chunk = panel.querySelector(`[data-chunk="${CSS.escape(citation.id)}"]`);
+  if (!chunk) return;
+  const offset = ($("ref-trilha")?.offsetHeight || 0) + 16;
+  const target = Math.max(0, panel.scrollTop + chunk.getBoundingClientRect().top - panel.getBoundingClientRect().top - offset);
+  scrollSmooth(panel, target, instant || !sameDoc);
+}
+
+function markActive() {
+  const { msg, fonte } = state.view;
+  document.querySelectorAll("[data-fonte]").forEach((element) => {
+    element.classList.toggle("ativa", Number(element.dataset.msg) === msg && Number(element.dataset.fonte) === fonte);
+  });
+  const message = state.messages[msg];
+  const citation = message?.citations[fonte - 1];
+  document.querySelectorAll("#painel .texto-legal").forEach((element) => element.classList.toggle("ativo", element.dataset.chunk === citation?.id));
+  if (!message) return;
+  const order = navigationOrder(message);
+  const position = order.indexOf(fonte);
+  $("ref-posicao").textContent = position === -1 ? `— /${order.length}` : `${position + 1}/${order.length}`;
+  $("ref-anterior").disabled = position <= 0;
+  $("ref-proxima").disabled = position === -1 || position >= order.length - 1;
+}
+
+function stepFonte(delta) {
+  const message = state.messages[state.view.msg];
+  if (!message) return;
+  const order = navigationOrder(message);
+  const next = order[order.indexOf(state.view.fonte) + delta];
+  if (next) openFonte(state.view.msg, next);
+}
+
+const law = { loaded: null, items: [], headings: [], matches: [], current: -1 };
+const HEADING = new Set(["livro", "titulo", "capitulo", "secao"]);
+const ACCENTS = { a: "aáàâã", e: "eéê", i: "ií", o: "oóôõ", u: "uúü", c: "cç" };
+
+function loadLaw() {
+  law.loaded ||= fetch(API + "/law").then((response) => (response.ok ? response.json() : Promise.reject(new Error("law")))).then(renderLaw).catch(() => {
+    law.loaded = null;
+    $("lei-texto").innerHTML = `<p class="vazio">Não foi possível carregar a lei agora.</p>`;
+  });
+  return law.loaded;
+}
+
+function lawHtml(item, pattern) {
+  let html = escapeHtml(item.text);
+  if (pattern) html = html.replace(pattern, "<mark>$&</mark>");
+  html = html.replace(/\((?:Inclu[íi]d|Reda[çc][ãa]o dada|Revogad|Vide|Vig[êe]ncia|Acrescentad|Renumerad|Produ[çc][ãa]o de efeito)[^)]*\)|\bVig[êe]ncia\b(?![^<]*<\/span>)/g, (note) => `<span class="lei-nota">${note}</span>`);
+  if (item.level === "artigo") html = html.replace(/^Art\.?\s*\d+(?:-[A-Z])?\.?\s*[º°o]?\.?/, (lead) => `<b>${lead}</b>`);
+  if (item.level === "paragrafo") html = html.replace(/^(?:§\s*\d+\.?\s*[º°o]?|Par[aá]grafo [uú]nico\.?)/, (lead) => `<b>${lead}</b>`);
+  return html;
+}
+
+function splitHeading(text) {
+  const match = text.match(/^((?:LIVRO|T[ÍI]TULO|CAP[ÍI]TULO|SE[ÇC][ÃA]O)\s+[IVXLCDM]+(?:-[A-Z])?)\s*(.*)$/);
+  return match ? { kicker: match[1], name: match[2] } : { kicker: "", name: text };
+}
+
+function renderLaw(data) {
+  if (data.url) $("lei-planalto").href = data.url;
+  law.items = data.chunks;
+  law.headings = data.chunks.filter((item) => HEADING.has(item.level));
+  $("lei-texto").innerHTML = data.chunks.map((item, index) => {
+    if (HEADING.has(item.level)) {
+      const { kicker, name } = splitHeading(item.text);
+      return `<h3 class="lei-cabecalho nivel-${item.level}" id="lei-${item.id}">${kicker ? `<span>${escapeHtml(kicker)}</span>` : ""}<strong>${escapeHtml(name)}</strong></h3>`;
+    }
+    return `<p class="nivel-${item.level}${index < 3 && item.level === "texto" ? " abertura" : ""}" id="lei-${item.id}">${lawHtml(item)}</p>`;
+  }).join("") || `<p class="vazio">A lei ainda não foi ingerida.</p>`;
+  $("lei-indice").innerHTML = law.headings.map((item) => {
+    const { kicker, name } = splitHeading(item.text);
+    return `<button type="button" class="nivel-${item.level}" data-lei-ir="${item.id}" data-busca="${escapeHtml(fold(item.text))}">${kicker ? `<span>${escapeHtml(kicker)}</span>` : ""}${escapeHtml(name)}</button>`;
+  }).join("");
+  law.items.forEach((item) => { item.element = $(`lei-${item.id}`); });
+  spyLaw();
+}
+
+function fold(text) {
+  return String(text).normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+}
+
+function filterLawIndex(query) {
+  const words = fold(query).split(/\s+/).filter(Boolean);
+  let shown = 0;
+  document.querySelectorAll("#lei-indice button").forEach((button) => {
+    const match = words.every((word) => button.dataset.busca.includes(word));
+    button.hidden = !match;
+    if (match) shown += 1;
+  });
+  $("lei-indice-vazio").hidden = shown > 0;
+}
+
+function goToLaw(id, { flash = true } = {}) {
+  const element = $(`lei-${id}`);
+  if (!element) return;
+  const box = $("lei-texto");
+  scrollSmooth(box, box.scrollTop + element.getBoundingClientRect().top - box.getBoundingClientRect().top - 16);
+  if (flash && element.tagName === "P") {
+    element.classList.add("alvo");
+    setTimeout(() => element.classList.remove("alvo"), 1400);
+  }
+  $("lei-sumario").classList.remove("aberto");
+}
+
+async function openLaw(id) {
+  setTab("lei");
+  await loadLaw();
+  requestAnimationFrame(() => goToLaw(id));
+}
+
+let spyFrame = 0;
+function keepInIndex(button) {
+  const nav = $("lei-indice");
+  const top = button.offsetTop - nav.offsetTop;
+  if (top < nav.scrollTop) nav.scrollTop = top;
+  else if (top + button.offsetHeight > nav.scrollTop + nav.clientHeight) nav.scrollTop = top + button.offsetHeight - nav.clientHeight;
+}
+
+function spyLaw() {
+  cancelAnimationFrame(spyFrame);
+  spyFrame = requestAnimationFrame(() => {
+    const box = $("lei-texto");
+    const top = box.getBoundingClientRect().top + 40;
+    let active = law.headings[0];
+    for (const item of law.headings) {
+      if (item.element.getBoundingClientRect().top > top) break;
+      active = item;
+    }
+    document.querySelectorAll("#lei-indice button").forEach((button) => {
+      const on = button.dataset.leiIr === active?.id;
+      if (on && !button.classList.contains("ativo") && !button.hidden) keepInIndex(button);
+      button.classList.toggle("ativo", on);
+    });
+  });
+}
+
+function articleQuery(query) {
+  const match = query.match(/^(?:art(?:igo)?\.?\s*)?(\d{1,3})(?:\s*-?\s*([a-z]))?\s*$/i);
+  return match ? `Art. ${match[1]}${match[2] ? `-${match[2].toUpperCase()}` : ""}` : null;
+}
+
+function searchLaw(query) {
+  const text = query.trim();
+  const code = articleQuery(text);
+  const pattern = !code && text.length >= 3
+    ? new RegExp(text.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/[aeiouc]/g, (letter) => `[${ACCENTS[letter]}]`).replace(/\s+/g, "\\s+"), "gi")
+    : null;
+  for (const item of law.items) {
+    if (HEADING.has(item.level) || !item.element) continue;
+    const html = lawHtml(item, pattern);
+    if (item.element.innerHTML !== html) item.element.innerHTML = html;
+    item.element.classList.toggle("encontrado", Boolean(pattern) && html.includes("<mark>"));
+    item.element.classList.remove("atual");
+  }
+  law.matches = pattern ? [...$("lei-texto").querySelectorAll("p.encontrado")] : [];
+  law.current = -1;
+  if (code) {
+    const target = law.items.find((item) => item.code === code);
+    $("lei-contagem").textContent = target ? code : "não existe";
+    law.article = target?.id ?? null;
+  } else {
+    law.article = null;
+    $("lei-contagem").textContent = pattern ? `${law.matches.length} resultado${law.matches.length === 1 ? "" : "s"}` : "";
+  }
+  $("lei-anterior").disabled = $("lei-proxima").disabled = !law.matches.length;
+}
+
+function stepLaw(delta) {
+  if (law.article) return goToLaw(law.article);
+  if (!law.matches.length) return;
+  law.matches[law.current]?.classList.remove("atual");
+  law.current = (law.current + delta + law.matches.length) % law.matches.length;
+  const line = law.matches[law.current];
+  line.classList.add("atual");
+  const box = $("lei-texto");
+  scrollSmooth(box, box.scrollTop + line.getBoundingClientRect().top - box.getBoundingClientRect().top - box.clientHeight / 3);
+  $("lei-contagem").textContent = `${law.current + 1}/${law.matches.length}`;
+}
+
+const MAX_CHARS = 500;
+
+function renderCredits() {
+  $("creditos").textContent = `${$("pergunta").value.length}/${MAX_CHARS}`;
+}
+
+function hideLoading() {
+  $("carregando").hidden = true;
+  document.body.removeAttribute("aria-busy");
+}
+
+function toMessage(item) {
+  return { id: item.id, question: item.question, answer: item.answer, profile: item.profile, model: item.model, citations: item.citations, documents: item.documents, usage: item.usage };
+}
+
+async function loadHistory() {
+  const response = await fetch(API + "/history");
+  const data = response.ok ? await response.json() : { items: [], more: false };
+  if (!data.items.length) { startOpening(); renderSources(); return; }
+  state.messages = data.items.map(toMessage);
+  state.history = { before: data.items[0].id, more: data.more, loading: false };
+  renderMessages();
+  renderSources(state.messages.length - 1);
+  fillHistory();
+}
+
+async function loadOlder() {
+  const history = state.history;
+  if (!history.more || history.loading || !history.before) return;
+  history.loading = true;
+  renderMessages({ keepFromBottom: $("rolagem").scrollHeight - $("rolagem").scrollTop });
+  let data = { items: [], more: history.more };
+  try {
+    const response = await fetch(`${API}/history?before=${encodeURIComponent(history.before)}`);
+    if (response.ok) data = await response.json();
+  } finally {
+    if (state.history !== history) return;
+    const keepFromBottom = $("rolagem").scrollHeight - $("rolagem").scrollTop;
+    history.loading = false;
+    history.more = data.more;
+    if (data.items.length) {
+      history.before = data.items[0].id;
+      state.messages = [...data.items.map(toMessage), ...state.messages];
+      if (state.view.msg !== null) state.view.msg += data.items.length;
+    }
+    renderMessages({ keepFromBottom });
+    if (state.view.msg !== null) renderSources(state.view.msg);
+    fillHistory();
+  }
+}
+
+function fillHistory() {
+  const box = $("rolagem");
+  if (state.history.more && box.scrollHeight <= box.clientHeight) loadOlder();
+}
+
+const PENSANDO_FRASES = [
+  "Lendo a pergunta…",
+  "Buscando na Lei 8.078/1990…",
+  "Cruzando os dispositivos…",
+  "Conferindo o contexto…",
+  "Redigindo o parecer…",
+];
+
+function startPensando(msg) {
+  let step = 0;
+  return setInterval(() => {
+    step = (step + 1) % PENSANDO_FRASES.length;
+    const message = state.messages[msg];
+    if (!message || !message.pending) return;
+    message.pendingText = PENSANDO_FRASES[step];
+    const el = document.querySelector(`[data-pensando="${msg}"]`);
+    if (el) el.textContent = message.pendingText;
+  }, 1600);
+}
+
+async function sendQuestion() {
+  const question = $("pergunta").value.trim();
+  if (question.length < 3) return;
+  if (state.sending) return;
+  state.sending = true;
+  $("enviar").disabled = true;
+  $("erro").hidden = true;
+  const msg = state.messages.length;
+  state.messages.push({ question, pending: true, pendingText: PENSANDO_FRASES[0] });
+  renderMessages();
+  const timer = startPensando(msg);
+  const payload = { question, model: state.model, profile: state.profile };
+  let response;
+  try {
+    response = await fetch(API + "/chat", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+    });
+  } catch {
+    response = { ok: false, status: 0, json: async () => ({}) };
+  }
+  const data = await response.json().catch(() => ({}));
+  clearInterval(timer);
+  state.sending = false;
+  $("enviar").disabled = false;
+  if (!response.ok) {
+    state.messages.splice(msg, 1);
+    renderMessages();
+    $("erro").hidden = false;
+    $("erro").textContent = data.error === "invalid_question_length"
+      ? `A pergunta deve ter entre 3 e ${MAX_CHARS} caracteres.`
+      : `Não foi possível consultar agora${data.message ? `: ${data.message}` : "."}`;
+    return;
+  }
+  state.messages[msg] = {
+    question,
+    answer: data.answer,
+    profile: data.profile,
+    model: data.usage.model,
+    citations: data.citations || [],
+    documents: data.documents || [],
+    usage: data.usage
+  };
+  $("pergunta").value = "";
+  renderMessages();
+  renderSources(msg);
+  renderCredits();
+  loadUsage();
+}
+
+async function loadUsage() {
+  const response = await fetch(API + "/usage");
+  if (!response.ok) return;
+  state.usage = await response.json();
+  const total = state.usage.totals;
+  $("uso-resumo").innerHTML = `
+    <span><strong>${total.questions}</strong><br>perguntas</span>
+    <span><strong>${total.total_tokens}</strong><br>tokens</span>
+    <span><strong>${Number(total.cost_usd).toFixed(6)}</strong><br>US$ estimados</span>`;
+  $("uso-linhas").innerHTML = state.usage.recent.map((row) => `
+    <tr><td>${escapeHtml(row.model)}</td><td>${row.prompt_tokens}</td><td>${row.embedding_tokens || 0}</td><td>${row.total_tokens}</td><td>US$ ${Number(row.cost_usd).toFixed(6)}</td><td>${new Date(row.created_at).toLocaleString("pt-BR")}</td></tr>`).join("");
+}
+
+function setTab(tab) {
+  const chat = tab === "chat";
+  document.querySelectorAll("[data-app-tab]").forEach((button) => {
+    button.classList.toggle("ativa", button.dataset.appTab === tab);
+    button.setAttribute("aria-selected", button.dataset.appTab === tab);
+  });
+  $("painel-uso").hidden = tab !== "uso";
+  $("painel-prompts").hidden = tab !== "prompts";
+  $("painel-lei").hidden = tab !== "lei";
+  if (tab === "lei") loadLaw();
+  document.querySelector(".mesa").hidden = !chat;
+  if (tab === "uso") loadUsage();
+}
+
+function renderModels() {
+  $("modelo").innerHTML = state.models.map((model) => `
+    <button type="button" class="modelo-opcao" role="radio" aria-checked="${model === state.model}" data-model="${escapeHtml(model)}">${escapeHtml(model)}</button>
+  `).join("") || `<span class="modelo-vazio">Nenhum modelo configurado</span>`;
+}
+
+async function loadPrompts() {
+  const response = await fetch(API + "/prompts");
+  if (!response.ok) return;
+  state.prompts = await response.json();
+  renderPrompts();
+}
+
+function renderPrompts() {
+  const data = state.prompts;
+  if (!data) return;
+  const limits = (limit) => `<div class="prompt-limites"><span class="selo">Entrada ≤ ${number(limit.input)} tokens</span><span class="selo">Saída ≤ ${number(limit.output)} tokens</span></div>`;
+  const cards = [
+    ...Object.entries(data.profiles).map(([name, prompt]) => ({ kind: "perfil", tag: "Perfil", title: PROFILE_NAMES[name] || name, prompt, limit: data.limits.answer })),
+    { kind: "reescrita", tag: "Reescrita", title: "Consulta de busca", prompt: data.rewrite, limit: data.limits.rewrite },
+  ].filter((card) => state.promptFilter === "todos" || card.kind === state.promptFilter);
+  $("prompts-lista").innerHTML = cards.map((card) => `
+    <article class="prompt-card">
+      <span class="rotulo-secao">${card.tag}</span>
+      <h3>${escapeHtml(card.title)}</h3>
+      ${limits(card.limit)}
+      <pre>${escapeHtml(card.prompt)}</pre>
+    </article>`).join("");
+}
+
+function startOpening() {
+  $("rolagem").innerHTML = `<div class="abertura-termo"><h2>Agente de defesa do consumidor</h2><p>O agente interpreta a intenção da pergunta, busca o dispositivo e seus contextos hierárquicos e responde citando as fontes recuperadas.</p><div class="sugestoes-iniciais">${[
+    "Posso desistir de uma compra feita pela internet?",
+    "Qual o prazo para reclamar de um produto com defeito?",
+    "O fornecedor pode me constranger na cobrança de uma dívida?"
+  ].map((text) => `<button type="button" class="sugestao" data-sugestao="${escapeHtml(text)}">${escapeHtml(text)}</button>`).join("")}</div></div>`;
+}
+
+async function start() {
+  startOpening();
+  renderSources();
+  const modelsResponse = await fetch(API + "/models");
+  if (modelsResponse.ok) {
+    const data = await modelsResponse.json();
+    state.models = data.models;
+    state.model = data.defaultModel;
+    renderModels();
+  }
+  await loadHistory();
+  $("rolagem").addEventListener("scroll", () => { if ($("rolagem").scrollTop < 80) loadOlder(); }, { passive: true });
+  document.querySelectorAll("[data-app-tab]").forEach((button) => button.addEventListener("click", () => setTab(button.dataset.appTab)));
+  $("atualizar-uso").addEventListener("click", loadUsage);
+  $("form").addEventListener("submit", (event) => { event.preventDefault(); sendQuestion(); });
+  $("pergunta").addEventListener("input", () => { $("enviar").disabled = !$("pergunta").value.trim(); renderCredits(); });
+  $("pergunta").addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); sendQuestion(); }
+  });
+  document.body.addEventListener("click", (event) => {
+    const lawLink = event.target.closest("[data-lei-ir]");
+    if (lawLink) {
+      if (lawLink.closest("#lei-indice")) goToLaw(lawLink.dataset.leiIr, { flash: false });
+      else openLaw(lawLink.dataset.leiIr);
+      closeSources();
+      return;
+    }
+    const reference = event.target.closest("[data-fonte]");
+    if (reference) {
+      event.preventDefault();
+      openFonte(Number(reference.dataset.msg), Number(reference.dataset.fonte));
+      if (matchMedia("(max-width: 900px)").matches) { $("fundamentacao").classList.add("aberto"); $("cortina").classList.add("aberto"); }
+      return;
+    }
+    const suggestion = event.target.closest("[data-sugestao]");
+    if (suggestion) {
+      $("pergunta").value = suggestion.dataset.sugestao;
+      $("enviar").disabled = false;
+      renderCredits();
+      $("pergunta").focus();
+    }
+  });
+  $("modelo").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-model]");
+    if (!button) return;
+    state.model = button.dataset.model;
+    renderModels();
+  });
+  $("perfis").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-perfil]");
+    if (!button) return;
+    state.profile = button.dataset.perfil;
+    document.querySelectorAll("#perfis [data-perfil]").forEach((item) => item.setAttribute("aria-pressed", item === button));
+  });
+  const openConfig = () => { $("config-painel").classList.add("aberto"); $("config-cortina").classList.add("aberto"); $("config-abrir").setAttribute("aria-expanded", "true"); };
+  const closeConfig = () => { $("config-painel").classList.remove("aberto"); $("config-cortina").classList.remove("aberto"); $("config-abrir").setAttribute("aria-expanded", "false"); };
+  $("config-abrir").addEventListener("click", openConfig);
+  $("config-fechar").addEventListener("click", closeConfig);
+  $("config-cortina").addEventListener("click", closeConfig);
+  $("prompts-filtro").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-filtro]");
+    if (!button) return;
+    state.promptFilter = button.dataset.filtro;
+    document.querySelectorAll("#prompts-filtro [data-filtro]").forEach((item) => item.setAttribute("aria-pressed", item === button));
+    renderPrompts();
+  });
+  let lawTimer = 0;
+  $("lei-busca").addEventListener("input", () => { clearTimeout(lawTimer); lawTimer = setTimeout(() => searchLaw($("lei-busca").value), 220); });
+  $("lei-busca").addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    clearTimeout(lawTimer);
+    searchLaw($("lei-busca").value);
+    stepLaw(event.shiftKey ? -1 : 1);
+  });
+  $("lei-anterior").addEventListener("click", () => stepLaw(-1));
+  $("lei-proxima").addEventListener("click", () => stepLaw(1));
+  $("lei-texto").addEventListener("scroll", spyLaw, { passive: true });
+  $("lei-sumario-filtro").addEventListener("input", () => filterLawIndex($("lei-sumario-filtro").value));
+  $("lei-sumario-botao").addEventListener("click", () => $("lei-sumario").classList.add("aberto"));
+  $("lei-sumario-fechar").addEventListener("click", () => $("lei-sumario").classList.remove("aberto"));
+  $("ref-anterior").addEventListener("click", () => stepFonte(-1));
+  $("ref-proxima").addEventListener("click", () => stepFonte(1));
+  const closeSources = () => { $("fundamentacao").classList.remove("aberto"); $("cortina").classList.remove("aberto"); };
+  $("cortina").addEventListener("click", closeSources);
+  $("fechar-fontes").addEventListener("click", closeSources);
+  $("ver-docs").addEventListener("click", () => { $("fundamentacao").classList.add("aberto"); $("cortina").classList.add("aberto"); });
+  loadPrompts();
+  loadUsage();
+}
+
+start()
+  .catch((error) => { $("erro").hidden = false; $("erro").textContent = error.message; })
+  .finally(hideLoading);
+  </script>
+</body>
+</html>

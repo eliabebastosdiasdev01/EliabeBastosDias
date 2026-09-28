@@ -1,0 +1,27 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: consulta
+      POSTGRES_PASSWORD: consulta
+      POSTGRES_DB: consulta_legis
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U consulta -d consulta_legis"]
+      interval: 2s
+      retries: 30
+
+  app:
+    build: .
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      DATABASE_URL: postgresql://consulta:consulta@db:5432/consulta_legis
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:

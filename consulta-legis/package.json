@@ -1,0 +1,22 @@
+{
+  "name": "consulta-legis",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx --env-file-if-exists=.env src/consulta-legis/ingest.ts --if-empty && tsx --env-file-if-exists=.env src/server.ts",
+    "ingest": "tsx --env-file-if-exists=.env src/consulta-legis/ingest.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "tsx": "^4.20.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.5.2",
+    "@types/pg": "^8.15.5",
+    "typescript": "^5.9.2"
+  }
+}
